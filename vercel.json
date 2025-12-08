@@ -1,0 +1,119 @@
+import type { BuildCommand, EnvironmentVariables, HeaderSecurityPolicy, CachingStrategy } from './types'; // Assuming custom types are defined in a separate file
+
+interface RedirectRule {
+    source: string;
+    destination: string;
+    status: number;
+}
+
+interface DeployConfig {
+    build: BuildCommand;
+    env: EnvironmentVariables;
+    redirects?: Array<RedirectRule>;
+    headers?: Array<HeaderSecurityPolicy>;
+    cache?: CachingStrategy;
+    frameworkSettings?: Record<string, any>; // Vercel/Netlify settings
+}
+
+export const deployConfig: DeployConfig = {
+    build: {
+        command: 'next build',
+        output: '.next'
+    },
+    env: {
+        NEXT_PUBLIC_API_URL: '',
+        NEXT_PUBLIC_STRIPE_KEY: ''
+    },
+    redirects: [
+        { source: '/old-url', destination: '/new-url', status: 301 }
+    ],
+    headers: [
+        {
+            source: '/(.*)',
+            headers: [
+                { key: 'Access-Control-Allow-Origin', value: '*' },
+                { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' }
+            ]
+        }
+    ],
+    cache: {
+        pages: {
+            '/api/*': 'no-cache',
+            '/posts/*': 'public'
+        },
+        staticFiles: {
+            '/static/*': 'public'
+        }
+    },
+    frameworkSettings: {
+        vercel: {
+            buildCommand: 'next build',
+            startCommand: 'next start',
+            region: 'eu-central-1'
+        },
+        netlify: {
+            buildContext: 'production',
+            functionsDirectory: '.netlify/functions'
+        }
+    }
+};
+
+import type { BuildCommand, EnvironmentVariables, HeaderSecurityPolicy, CachingStrategy } from './types'; // Assuming custom types are defined in a separate file
+
+interface RedirectRule {
+    source: string;
+    destination: string;
+    status: number;
+}
+
+interface DeployConfig {
+    build: BuildCommand;
+    env: EnvironmentVariables;
+    redirects?: Array<RedirectRule>;
+    headers?: Array<HeaderSecurityPolicy>;
+    cache?: CachingStrategy;
+    frameworkSettings?: Record<string, any>; // Vercel/Netlify settings
+}
+
+export const deployConfig: DeployConfig = {
+    build: {
+        command: 'next build',
+        output: '.next'
+    },
+    env: {
+        NEXT_PUBLIC_API_URL: '',
+        NEXT_PUBLIC_STRIPE_KEY: ''
+    },
+    redirects: [
+        { source: '/old-url', destination: '/new-url', status: 301 }
+    ],
+    headers: [
+        {
+            source: '/(.*)',
+            headers: [
+                { key: 'Access-Control-Allow-Origin', value: '*' },
+                { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' }
+            ]
+        }
+    ],
+    cache: {
+        pages: {
+            '/api/*': 'no-cache',
+            '/posts/*': 'public'
+        },
+        staticFiles: {
+            '/static/*': 'public'
+        }
+    },
+    frameworkSettings: {
+        vercel: {
+            buildCommand: 'next build',
+            startCommand: 'next start',
+            region: 'eu-central-1'
+        },
+        netlify: {
+            buildContext: 'production',
+            functionsDirectory: '.netlify/functions'
+        }
+    }
+};
